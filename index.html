@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Feliz Aniversário 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--p1:#ffd9e6;--p2:#ff9dbc;--ink:#c2185b;--cake:#a8786c;--cake2:#86594f;--cream:#fff1dc;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--p1:#ffc9dc;--p2:#f27ba4}}
+:root[data-theme="dark"]{--p1:#ffc9dc;--p2:#f27ba4}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(160deg,var(--p1),var(--p2));font-family:'Quicksand',system-ui,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+#fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+.bk{position:fixed;bottom:-60px;border-radius:50%;pointer-events:none;animation:up linear infinite}
+@keyframes up{0%{transform:translate(0,0);opacity:0}15%{opacity:.9}100%{transform:translate(30px,-115vh);opacity:0}}
+#app{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.hb{margin:0 0 .1em;min-height:1.3em;padding:0 .5rem;text-align:center;font:700 clamp(2.3rem,12vw,3.5rem)/1.2 'Pacifico','Brush Script MT',cursive;color:var(--ink);text-shadow:2px 2px 5px rgba(255,255,255,.7)}
+.hb span{display:inline-block;opacity:0;transform:translateY(22px) scale(.6);animation:pop .6s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.sub{margin:0 0 2.4rem;padding:0 1rem;text-align:center;font-weight:700;letter-spacing:.03em;color:#fff;text-shadow:0 2px 8px rgba(194,24,91,.45);opacity:0;transition:opacity 1s 1.5s}
+.on .sub{opacity:1}
+.cake{position:relative;width:min(64vw,300px);display:flex;flex-direction:column;align-items:center}
+.cd{position:relative;width:11px;height:46px;border-radius:4px 4px 2px 2px;background:repeating-linear-gradient(135deg,#fff 0 6px,#ff9dbc 6px 12px);box-shadow:0 0 8px rgba(255,255,255,.6)}
+.f{position:absolute;left:50%;bottom:100%;width:24px;height:38px;margin:0 0 -2px -12px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(ellipse at 50% 72%,#fff 0,#fff6c8 30%,#ffd37a 62%,#ffb84d 100%);filter:drop-shadow(0 0 16px #ffe08a);transform-origin:50% 100%;animation:fl .18s ease-in-out infinite alternate}
+@keyframes fl{to{transform:scale(1.07,.93) rotate(-3deg)}}
+.out .f{animation:none;opacity:0;transform:scale(.1);transition:.45s}
+.sm{position:absolute;left:50%;bottom:100%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:rgba(255,255,255,.85);filter:blur(3px);opacity:0}
+.out .sm{animation:sm 2.2s ease-out forwards}
+.out .sm:nth-child(2){animation-delay:.3s}
+@keyframes sm{0%{opacity:.9;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(14px,-90px) scale(3)}}
+.l{width:100%;height:27px;margin-top:3px;border-radius:7px;background:linear-gradient(var(--cake),var(--cake2));box-shadow:inset 0 2px 0 rgba(255,255,255,.18)}
+.l.t{background:linear-gradient(var(--cream) 0 7px,var(--cake) 7px,var(--cake2))}
+.pl{width:112%;height:4px;margin-top:4px;border-radius:3px;background:#fff;box-shadow:0 8px 20px rgba(194,24,91,.25)}
+.hint{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 30px);margin:0;text-align:center;font-weight:700;color:#fff;text-shadow:0 2px 8px rgba(194,24,91,.5);animation:br 1.8s ease-in-out infinite}
+@keyframes br{50%{opacity:.45;transform:translateY(-4px)}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<main id="app">
+<h1 class="hb" id="hb"></h1>
+<p class="sub" id="sub"></p>
+<div class="cake"><div class="cd"><i class="sm"></i><i class="sm"></i><div class="f"></div></div><div class="l t"></div><div class="l"></div><div class="l"></div><div class="pl"></div></div>
+<p class="hint" id="hint">toque para soprar a vela 🕯️</p>
+</main>
+<script>
+const NOME='Amor',$=s=>document.querySelector(s),R=Math.random,
+app=$('#app'),hb=$('#hb'),hint=$('#hint'),cv=$('#fx'),cx=cv.getContext('2d'),D=Math.min(devicePixelRatio||1,2),
+CC=['#ff4d88','#ffd1e1','#ffffff','#ffcf5c','#b388ff','#ff8fb3','#c2185b'];
+let W,H,P=[],rain=0,out=0;
+function rs(){W=innerWidth;H=innerHeight;cv.width=W*D;cv.height=H*D;cx.setTransform(D,0,0,D,0,0)}
+addEventListener('resize',rs);rs();
+$('#sub').textContent='Feliz aniversário, '+NOME+' 💖';
+for(let i=0;i<26;i++){const e=document.createElement('i'),s=8+R()*36;e.className='bk';e.style.cssText=`left:${R()*100}%;width:${s}px;height:${s}px;animation-duration:${9+R()*12}s;animation-delay:${-R()*20}s;background:${R()<.35?'rgba(255,90,150,.5)':'rgba(255,255,255,.75)'}`;document.body.appendChild(e)}
+function add(o){if(P.length<600)P.push(Object.assign({x:R()*W,y:-12,vx:0,vy:2,w:6+R()*6,h:3+R()*4,r:R()*6,vr:(R()-.5)*.3,g:0,c:CC[0|R()*CC.length]},o))}
+function burst(x,y,n){for(let i=0;i<n;i++){const a=R()*6.283,s=3+R()*9;add({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-6,g:.27})}}
+(function f(){
+ cx.clearRect(0,0,W,H);
+ if(rain&&R()<.45)add({vx:R()*1.4-.7,vy:1.5+R()*2});
+ for(let i=P.length-1;i>=0;i--){const p=P[i];p.vy+=p.g;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;
+  if(p.y>H+20){P.splice(i,1);continue}
+  cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore()}
+ requestAnimationFrame(f)})();
+app.addEventListener('pointerdown',e=>{
+ if(!out){
+  out=1;app.classList.add('out','on');
+  hb.innerHTML=[...'Happy Birthday!'].map((c,i)=>`<span style="animation-delay:${.5+i*.08}s">${c==' '?'&nbsp;':c}</span>`).join('');
+  hint.textContent='toque na tela para mais confete 🎉';
+  setTimeout(()=>{burst(W/2,H*.42,150);rain=1},400)
+ }else burst(e.clientX,e.clientY,50)});
+</script>
+</body>
+</html>
